@@ -13,6 +13,9 @@ CHANNELS = {
     # Add more channels as needed
 }
 
+# Directory to store the output files
+OUTPUT_DIR = "video_segments"
+
 def get_live_video_id(channel_id):
     youtube = build('youtube', 'v3', developerKey=API_KEY)
     try:
@@ -35,10 +38,12 @@ def get_live_video_id(channel_id):
 
 def create_m3u8_from_youtube(video_id, channel_name):
     url = f"https://www.youtube.com/watch?v={video_id}"
+    output_path = os.path.join(OUTPUT_DIR, channel_name)
+    os.makedirs(output_path, exist_ok=True)
     command = (
         f"streamlink -O {url} best | "
         f"ffmpeg -i - -c copy -f hls -hls_time 10 "
-        f"-hls_list_size 0 -hls_segment_filename '{channel_name}/segment_%03d.ts' {channel_name}/{channel_name}.m3u8"
+        f"-hls_list_size 0 -hls_segment_filename '{output_path}/segment_%03d.ts' {output_path}/{channel_name}.m3u8"
     )
     process = subprocess.Popen(command, shell=True)
     return process
@@ -48,12 +53,13 @@ def main():
         for channel_name, channel_id in CHANNELS.items():
             video_id = get_live_video_id(channel_id)
             if video_id:
-                if not os.path.exists(channel_name):
-                    os.makedirs(channel_name)
                 print(f'Starting to stream live video from channel {channel_name}: {video_id}')
                 process = create_m3u8_from_youtube(video_id, channel_name)
                 while process.poll() is None:
                     time.sleep(10)  # Sleep for 10 seconds before checking again
+                # Display the URL of the created m3u8 file
+                m3u8_url = f"https://9putt.github.io/plusm3u8/{OUTPUT_DIR}/{channel_name}/{channel_name}.m3u8"
+                print(f'm3u8 URL: {m3u8_url}')
             else:
                 print(f"No live video found for channel: {channel_name}")
                 time.sleep(300)  # Sleep for 5 minutes if no live video found
