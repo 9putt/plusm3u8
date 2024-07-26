@@ -5,7 +5,7 @@ on:
     branches:
       - main
   schedule:
-    - cron: '*/30 * * * *' 
+    - cron: '*/30 * * * *' # รันทุก 30 นาที
 
 jobs:
   run-script:
