@@ -1,13 +1,14 @@
+import os
 from googleapiclient.discovery import build
 import time
 import subprocess
 
-# Your YouTube API key
-API_KEY = 'AIzaSyC-cp-k-YOituSSyrqkHOZJ_dMgGF5kFbo'
+# Get API key from environment variable
+API_KEY = os.getenv('YOUTUBE_API_KEY')
 CHANNELS = {
-    "Channel_3": "UCirZPTc9IoKM_DsA9aKbc4g",
-    "thairath": "UCrFDdD-EE05N7gjwZho2wqw",
-    "glaibaan": "UCx2PGrMyLVyUl9rte_JqWlw",
+    "Channel_1": "CHANNEL_ID_1",
+    "Channel_2": "CHANNEL_ID_2",
+    "Channel_3": "CHANNEL_ID_3",
     # Add more channels as needed
 }
 
@@ -38,8 +39,7 @@ def create_m3u8_from_youtube(video_id, channel_name):
     command = (
         f"streamlink -O {url} best | "
         f"ffmpeg -i - -c copy -f hls -hls_time 10 "
-        f"-hls_list_size 5 -hls_flags delete_segments "
-        f"-hls_segment_filename '{channel_name}/segment_%03d.ts' {channel_name}/{channel_name}.m3u8"
+        f"-hls_list_size 0 -hls_segment_filename '{channel_name}/segment_%03d.ts' {channel_name}/{channel_name}.m3u8"
     )
     
     # Run the command in the shell
