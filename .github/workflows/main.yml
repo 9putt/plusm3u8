@@ -5,7 +5,7 @@ on:
     branches:
       - main
   schedule:
-    - cron: '*/30 * * * *' # รันทุก 30 นาที
+    - cron: '*/30 * * * *' #
 
 jobs:
   run-script:
@@ -23,7 +23,7 @@ jobs:
     - name: Install dependencies
       run: |
         sudo apt update
-        sudo apt install -y streamlink ffmpeg
+        sudo apt install -y python3-pip streamlink ffmpeg
         pip install google-api-python-client
 
     - name: Run script
