@@ -6,9 +6,9 @@ import subprocess
 # Get API key from environment variable
 API_KEY = os.getenv('YOUTUBE_API_KEY')
 CHANNELS = {
-    "Channel_1": "CHANNEL_ID_1",
-    "Channel_2": "CHANNEL_ID_2",
-    "Channel_3": "CHANNEL_ID_3",
+    "Channel_3": "UCirZPTc9IoKM_DsA9aKbc4g",
+    "thairath": "UCrFDdD-EE05N7gjwZho2wqw",
+    "glaibaan": "UCx2PGrMyLVyUl9rte_JqWlw",
     # Add more channels as needed
 }
 
